@@ -1,14 +1,9 @@
-import {
-  Box,
-  Button,
-  Flex,
-  Heading,
-  HStack,
-  Input,
-  Link,
-} from '@chakra-ui/react';
+import { Button, Flex, Heading, HStack, Input, Link } from '@chakra-ui/react';
+import { signIn, signOut, useSession } from 'next-auth/react';
 
 const Navbar = () => {
+  const { data: session } = useSession();
+
   return (
     <Flex>
       <Heading>ReceiptBook</Heading>
@@ -20,7 +15,24 @@ const Navbar = () => {
       </HStack>
       <HStack>
         <Input placeholder="Search..." />
-        <Button>Log In</Button>
+        {!session && (
+          <Button
+            onClick={() => {
+              signIn('github');
+            }}
+          >
+            Sign In
+          </Button>
+        )}
+        {session && (
+          <Button
+            onClick={() => {
+              signOut();
+            }}
+          >
+            Sign Out
+          </Button>
+        )}
         <Button>Bag</Button>
       </HStack>
     </Flex>
