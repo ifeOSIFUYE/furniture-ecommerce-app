@@ -1,4 +1,12 @@
-import { Button, Flex, Heading, HStack, Input, Link } from '@chakra-ui/react';
+import {
+  Button,
+  Code,
+  Flex,
+  Heading,
+  HStack,
+  Input,
+  Link,
+} from '@chakra-ui/react';
 import { signIn, signOut, useSession } from 'next-auth/react';
 
 const Navbar = () => {
@@ -35,6 +43,7 @@ const Navbar = () => {
         )}
         <Button>Bag</Button>
       </HStack>
+      <Code>navbar.js</Code>
     </Flex>
   );
 };
