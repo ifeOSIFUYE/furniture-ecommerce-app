@@ -2,14 +2,18 @@ import { ChakraProvider } from '@chakra-ui/react';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 import { SessionProvider } from 'next-auth/react';
+import theme from '../lib/theme';
+import { AppProvider } from '../context/context';
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   return (
-    <ChakraProvider>
+    <ChakraProvider theme={theme}>
       <SessionProvider session={session}>
-        <Header />
-        <Component {...pageProps} />
-        <Footer />
+        <AppProvider>
+          <Header />
+          <Component {...pageProps} />
+          <Footer />
+        </AppProvider>
       </SessionProvider>
     </ChakraProvider>
   );

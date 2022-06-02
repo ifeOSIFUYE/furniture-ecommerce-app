@@ -1,4 +1,6 @@
 import {
+  Badge,
+  Box,
   Button,
   Code,
   Flex,
@@ -8,9 +10,12 @@ import {
   Link,
 } from '@chakra-ui/react';
 import { signIn, signOut, useSession } from 'next-auth/react';
+import { useGlobalContext } from '../context/context';
+import CartDrawer from './CartDrawer';
 
 const Navbar = () => {
   const { data: session } = useSession();
+  const { numItemsInCart } = useGlobalContext();
 
   return (
     <Flex>
@@ -41,7 +46,12 @@ const Navbar = () => {
             Sign Out
           </Button>
         )}
-        <Button>Bag</Button>
+        <Box position="relative">
+          <CartDrawer />
+          <Badge colorScheme="red" position="absolute" right={0} rounded="full">
+            {numItemsInCart}
+          </Badge>
+        </Box>
       </HStack>
       <Code>navbar.js</Code>
     </Flex>

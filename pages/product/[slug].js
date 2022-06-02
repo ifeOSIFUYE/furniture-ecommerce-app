@@ -11,10 +11,15 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
+import { useGlobalContext } from '../../context/context';
+import { useState } from 'react';
 import { client, urlFor } from '../../lib/client';
 
 const ProductDetails = ({ product }) => {
+  const [amount, setAmount] = useState(1);
   const { image, name, details, price } = product;
+  const productWithAmount = { ...product, amount };
+  const { addToCart } = useGlobalContext();
 
   return (
     <Box minH="100vh">
@@ -42,11 +47,21 @@ const ProductDetails = ({ product }) => {
             <Heading>${price}</Heading>
             <Text>Quantity</Text>
             <HStack>
-              <Button>minus</Button>
-              <Text>0</Text>
-              <Button>add</Button>
+              <Button
+                onClick={() =>
+                  setAmount((prev) => (prev - 1 < 1 ? 1 : prev - 1))
+                }
+              >
+                minus
+              </Button>
+              <Text>{amount}</Text>
+              <Button onClick={() => setAmount((prev) => prev + 1)}>add</Button>
             </HStack>
-            <Button variant="outline" colorScheme="teal">
+            <Button
+              variant="outline"
+              colorScheme="teal"
+              onClick={() => addToCart(productWithAmount)}
+            >
               Add to Cart
             </Button>
             <Heading>PRODUCT INFO</Heading>
@@ -61,7 +76,6 @@ const ProductDetails = ({ product }) => {
 export default ProductDetails;
 
 export async function getStaticPaths() {
-  //   const query = `*[_type == "product"]`;
   const query = `*[_type == "product"] {slug {current}}`;
 
   const products = await client.fetch(query);

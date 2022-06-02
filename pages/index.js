@@ -22,7 +22,7 @@ export default function Home({ products }) {
   );
 }
 
-export async function getStaticProps(context) {
+export async function getStaticProps() {
   const query = '*[_type == "product"]';
   const data = await client.fetch(query);
 
