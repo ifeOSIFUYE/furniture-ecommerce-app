@@ -21,22 +21,18 @@ const CartDrawer = () => {
   const btnRef = React.useRef();
 
   const handleCheckout = async () => {
-    // const stripe = await getStripe();
-    // const response = await fetch('/api/checkout_sessions', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   // use cart Items
-    //   body: JSON.stringify({
-    //     image: '/images/nathan-fertig-FBXuXp57eM0-unsplash.jpg',
-    //     name: 'sofa',
-    //     price: '400.99',
-    //   }),
-    // });
-    // if (response.statusCode === 500) return;
-    // const data = await response.json();
-    // stripe.redirectToCheckout({ sessionId: data.id });
+    const stripe = await getStripe();
+    const response = await fetch('/api/checkout_sessions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      // use cart Items
+      body: JSON.stringify(cart),
+    });
+    if (response.statusCode === 500) return;
+    const data = await response.json();
+    stripe.redirectToCheckout({ sessionId: data.id });
   };
 
   return (

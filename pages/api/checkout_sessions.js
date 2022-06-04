@@ -2,25 +2,35 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 export default async function handler(req, res) {
   if (req.method === 'POST') {
-    console.log(req.body);
     try {
       const params = {
         submit_type: 'pay',
         payment_method_types: ['card', 'klarna'],
-        line_items: {
-          price_data: {
-            currency: 'eur',
-            product_data: {
-              name: req.body.name,
+        line_items: req.body.map((item) => {
+          const img = item.image[0].asset._ref;
+          const newImage = img
+            .replace(
+              'image-',
+              'https://cdn.sanity.io/images/62kr1882/production'
+            )
+            .replace('-jpg', '-.jpg');
+
+          return {
+            price_data: {
+              currency: 'eur',
+              product_data: {
+                name: item.name,
+                images: [newImage],
+              },
+              unit_amount: item.price * 100,
             },
             adjustable_quantity: {
               enabled: true,
               minimum: 1,
             },
-            quantity: 1,
-          },
-        },
-
+            quantity: item.amount,
+          };
+        }),
         mode: 'payment',
         success_url: `${req.headers.origin}/?success=true`,
         cancel_url: `${req.headers.origin}/?canceled=true`,
