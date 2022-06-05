@@ -8,7 +8,6 @@ import {
   Link,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
-import getStripe from '../lib/getStripe';
 import { urlFor } from '../lib/client';
 
 const ProductCard = ({ product: { image, name, slug, price } }) => {
