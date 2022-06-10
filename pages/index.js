@@ -1,20 +1,26 @@
-import { Box, Code, Container, Heading, SimpleGrid } from '@chakra-ui/react';
+import { Box, Container, SimpleGrid } from '@chakra-ui/react';
 import ProductCard from '../components/ProductCard';
 import { client } from '../lib/client';
+import { useRouter } from 'next/router';
 
 export default function Home({ products }) {
+  const router = useRouter();
+
+  const handleRoute = (productSlug) => {
+    router.push(`/product/${productSlug}`);
+  };
+
   return (
-    <Box minH="100vh">
-      <Heading textAlign="center">
-        Home Page <Code>index.js</Code>
-      </Heading>
-      <Container maxW="container.xl">
-        <SimpleGrid columns={[1, null, 3, 4]} spacing={10}>
+    <Box minH="100vh" background="orange.100">
+      <Container maxW="container.lg" p={5} pt={10} centerContent>
+        <SimpleGrid columns={[1, null, 2, 3]} spacing={10}>
           {products &&
             products.map((product) => (
-              <Box key={product._id}>
-                <ProductCard product={product} />
-              </Box>
+              <ProductCard
+                key={product._id}
+                product={product}
+                handleRoute={handleRoute}
+              />
             ))}
         </SimpleGrid>
       </Container>

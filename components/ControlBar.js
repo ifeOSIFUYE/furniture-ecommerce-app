@@ -4,8 +4,11 @@ import {
   useHMSActions,
   useHMSStore,
 } from '@100mslive/react-sdk';
-import { Box, Button, HStack } from '@chakra-ui/react';
+import { Box, Button, HStack, IconButton } from '@chakra-ui/react';
 import React from 'react';
+import { BiHide, BiShow } from 'react-icons/bi';
+import { GrVolumeMute } from 'react-icons/gr';
+import { VscUnmute } from 'react-icons/vsc';
 
 const ControlBar = () => {
   const hmsActions = useHMSActions();
@@ -23,12 +26,33 @@ const ControlBar = () => {
   return (
     <Box>
       <HStack>
-        <Button onClick={toggleAudio}>
-          {isLocalAudioEnabled ? 'Mute' : 'Unmute'}
-        </Button>
-        <Button onClick={toggleVideo}>
-          {isLocalVideoEnabled ? 'Hide' : 'Show'}
-        </Button>
+        {isLocalAudioEnabled ? (
+          <IconButton
+            icon={<GrVolumeMute />}
+            onClick={toggleAudio}
+            colorScheme="red"
+          />
+        ) : (
+          <IconButton
+            icon={<VscUnmute />}
+            onClick={toggleAudio}
+            colorScheme="green"
+          />
+        )}
+
+        {isLocalVideoEnabled ? (
+          <IconButton
+            icon={<BiHide />}
+            onClick={toggleVideo}
+            colorScheme="red"
+          />
+        ) : (
+          <IconButton
+            icon={<BiShow />}
+            onClick={toggleVideo}
+            colorScheme="green"
+          />
+        )}
       </HStack>
     </Box>
   );

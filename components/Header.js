@@ -1,14 +1,19 @@
-import { Box, Code } from '@chakra-ui/react';
+import { Box, Container } from '@chakra-ui/react';
 import Navbar from './Navbar';
-import { useGlobalContext } from '../context/context';
-import CartDrawer from './CartDrawer';
+import { signIn, useSession } from 'next-auth/react';
+
 import React from 'react';
+import WholeSiteMessage from './WholeSiteMessage';
 
 const Header = () => {
+  const { data: session } = useSession();
+
   return (
-    <Box>
-      <Navbar />
-      <Code>header.js</Code>
+    <Box borderBottom="2px solid orange">
+      <WholeSiteMessage session={session} signIn={signIn} />
+      <Container maxW="container.xl">
+        <Navbar />
+      </Container>
     </Box>
   );
 };

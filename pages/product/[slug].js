@@ -3,71 +3,83 @@ import {
   Box,
   Button,
   Container,
-  Flex,
   Heading,
   HStack,
+  IconButton,
   Image,
   Stack,
   Text,
-  VStack,
+  useToast,
 } from '@chakra-ui/react';
 import { useGlobalContext } from '../../context/context';
 import { useState } from 'react';
 import { client, urlFor } from '../../lib/client';
+import { GrFormAdd, GrFormSubtract } from 'react-icons/gr';
 
 const ProductDetails = ({ product }) => {
   const [amount, setAmount] = useState(1);
   const { image, name, details, price } = product;
   const productWithAmount = { ...product, amount };
   const { addToCart } = useGlobalContext();
+  const toast = useToast();
 
   return (
-    <Box minH="100vh">
-      <Container minW="container.lg">
-        <Flex gap={10}>
-          <VStack>
-            <Box boxSize="lg" borderWidth={1}>
-              <AspectRatio ratio={1}>
-                <Image
-                  src={urlFor(image && image[0])}
-                  alt={name}
-                  objectFit="contain"
-                />
-              </AspectRatio>
-            </Box>
-            <Stack direction="row">
-              <Box boxSize="4rem" borderWidth={1}></Box>
-              <Box boxSize="4rem" borderWidth={1}></Box>
-              <Box boxSize="4rem" borderWidth={1}></Box>
-            </Stack>
-          </VStack>
-          <Box>
+    <Box minH="90vh" p={5} pt={10} bg="orange.100">
+      <Container maxW="container.lg" centerContent>
+        <Stack gap={10} direction="column">
+          <AspectRatio ratio={1}>
+            <Image
+              src={urlFor(image && image[0])}
+              alt={name}
+              w={10}
+              objectFit="contain"
+            />
+          </AspectRatio>
+
+          <Stack direction="column">
             <Heading>{name}</Heading>
 
             <Heading>${price}</Heading>
             <Text>Quantity</Text>
             <HStack>
-              <Button
+              <IconButton
+                icon={<GrFormSubtract />}
+                variant="ghost"
+                colorScheme="teal"
                 onClick={() =>
                   setAmount((prev) => (prev - 1 < 1 ? 1 : prev - 1))
                 }
-              >
-                minus
-              </Button>
+              />
+
               <Text>{amount}</Text>
-              <Button onClick={() => setAmount((prev) => prev + 1)}>add</Button>
+              <IconButton
+                icon={<GrFormAdd />}
+                variant="ghost"
+                colorScheme="teal"
+                onClick={() => {
+                  setAmount((prev) => prev + 1);
+                }}
+              />
             </HStack>
             <Button
               variant="outline"
-              colorScheme="teal"
-              onClick={() => addToCart(productWithAmount)}
+              colorScheme="blue"
+              onClick={() => {
+                addToCart(productWithAmount);
+                toast({
+                  title: 'Item successfully added to cart ',
+                  status: 'info',
+                  duration: 4000,
+                  isClosable: true,
+                });
+              }}
             >
-              Add to Cart
+              ADD TO CART
             </Button>
             <Heading>PRODUCT INFO</Heading>
             <Text>{details}</Text>
-          </Box>
-        </Flex>
+          </Stack>
+        </Stack>
       </Container>
     </Box>
   );

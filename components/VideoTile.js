@@ -3,7 +3,7 @@ import {
   useHMSActions,
   useHMSStore,
 } from '@100mslive/react-sdk';
-import { Box, Text } from '@chakra-ui/react';
+import { AspectRatio, Box, Text } from '@chakra-ui/react';
 import React, { useRef, useEffect } from 'react';
 
 const VideoTile = ({ peer, isLocal }) => {
@@ -25,7 +25,9 @@ const VideoTile = ({ peer, isLocal }) => {
 
   return (
     <Box>
-      <video ref={videoRef} autoPlay={true} playsInline muted={true}></video>
+      <AspectRatio minW="20rem" ratio={4 / 3}>
+        <video ref={videoRef} autoPlay={true} playsInline muted={true}></video>
+      </AspectRatio>
       <Text>{peer.name}</Text>
     </Box>
   );

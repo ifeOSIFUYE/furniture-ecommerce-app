@@ -7,6 +7,11 @@ import {
   Button,
   Container,
   Heading,
+  Center,
+  Text,
+  HStack,
+  VStack,
+  Icon,
 } from '@chakra-ui/react';
 import {
   selectIsConnectedToRoom,
@@ -15,6 +20,8 @@ import {
 } from '@100mslive/react-sdk';
 import Room from '../components/Room';
 import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
+import { WarningIcon } from '@chakra-ui/icons';
 
 const endPoint =
   'https://prod-in2.100ms.live/hmsapi/furniture-ecommerce.app.100ms.live/';
@@ -24,6 +31,7 @@ const PreviewScreen = () => {
   const [userName, setUserName] = useState('');
   const hmsActions = useHMSActions();
   const isConnected = useHMSStore(selectIsConnectedToRoom);
+  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -55,11 +63,29 @@ const PreviewScreen = () => {
   }, [hmsActions]);
 
   if (status === 'unauthenticated') {
-    return <Heading>Access Denied</Heading>;
+    return (
+      <Center h="90vh" bg="orange.100">
+        <VStack>
+          <WarningIcon w={20} h={20} color="red" />
+          <Heading>ACCESS DENIED</Heading>
+          <Text textAlign="center">
+            Seems like you are not <br /> allowed to access this page{' '}
+          </Text>
+          <Button
+            aria-label="Go to home page"
+            size="lg"
+            colorScheme="green"
+            onClick={() => router.push('/')}
+          >
+            Go Back
+          </Button>
+        </VStack>
+      </Center>
+    );
   }
 
   return (
-    <Container>
+    <Center h="90vh" bg="orange.100">
       {!isConnected ? (
         <form onSubmit={handleSubmit}>
           <FormControl isRequired>
@@ -74,13 +100,21 @@ const PreviewScreen = () => {
             <FormHelperText>
               Experience secure video chatting with our sales assistants.
             </FormHelperText>
-            <Button type="submit">Submit</Button>
+            <Button
+              type="submit"
+              variant="outline"
+              colorScheme="blue"
+              onClick={handleSubmit}
+              mt={5}
+            >
+              Submit
+            </Button>
           </FormControl>
         </form>
       ) : (
         <Room />
       )}
-    </Container>
+    </Center>
   );
 };
 

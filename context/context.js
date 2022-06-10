@@ -5,7 +5,6 @@ import reducer from './reducer';
 const AppContext = React.createContext();
 
 const initialState = {
-  loading: false,
   cart: [],
   totalPrice: 0,
   numItemsInCart: 0,

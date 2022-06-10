@@ -9,11 +9,13 @@ import {
   Button,
   useDisclosure,
   Text,
+  IconButton,
 } from '@chakra-ui/react';
 import { useGlobalContext } from '../context/context';
 import React from 'react';
 import getStripe from '../lib/getStripe';
 import CartItem from './CartItem';
+import { BsBag } from 'react-icons/bs';
 
 const CartDrawer = () => {
   const { cart, totalPrice, clearCart } = useGlobalContext();
@@ -37,9 +39,14 @@ const CartDrawer = () => {
 
   return (
     <>
-      <Button ref={btnRef} colorScheme="teal" onClick={onOpen}>
-        Bag
-      </Button>
+      <IconButton
+        variant="ghost"
+        aria-label="Shopping bag"
+        icon={<BsBag />}
+        ref={btnRef}
+        onClick={onOpen}
+      />
+
       <Drawer
         isOpen={isOpen}
         placement="right"
@@ -64,7 +71,9 @@ const CartDrawer = () => {
             <Button variant="outline" colorScheme="red" onClick={clearCart}>
               clear cart
             </Button>
-            <Button onClick={handleCheckout}>Checkout</Button>
+            <Button onClick={handleCheckout} colorScheme="green">
+              Checkout
+            </Button>
           </DrawerFooter>
         </DrawerContent>
       </Drawer>
